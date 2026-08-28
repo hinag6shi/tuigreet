@@ -12,11 +12,7 @@ use codespan_reporting::{
 use dirs::config_dir;
 
 use crate::{
-  AlignGreeting,
-  Config,
-  ConfigError,
-  SecretMode,
-  env::load_env_variables,
+  AlignGreeting, Config, ConfigError, SecretMode, env::load_env_variables,
 };
 
 /// Loads the effective configuration from files, environment, and CLI options.
@@ -311,6 +307,15 @@ fn apply_config_layer(dest: &mut Config, src: Config) {
   }
   if src.background.matrix.mutate_chance.is_some() {
     dest.background.matrix.mutate_chance = src.background.matrix.mutate_chance;
+  }
+  if src.background.video.path.is_some() {
+    dest.background.video.path = src.background.video.path;
+  }
+  if src.background.video.charset.is_some() {
+    dest.background.video.charset = src.background.video.charset;
+  }
+  if src.background.video.scale_mode.is_some() {
+    dest.background.video.scale_mode = src.background.video.scale_mode;
   }
 
   // Outputs: a non-empty list from a higher-priority layer fully replaces
@@ -721,6 +726,15 @@ pub fn extract_cli_config(matches: &getopts::Matches) -> Config {
       config.background.matrix.min_speed = Some(lo);
       config.background.matrix.max_speed = Some(hi);
     }
+  }
+  if let Some(path) = matches.opt_str("video-path") {
+    config.background.video.path = Some(path);
+  }
+  if let Some(charset) = matches.opt_str("video-charset") {
+    config.background.video.charset = Some(charset);
+  }
+  if let Some(mode) = matches.opt_str("video-scale-mode") {
+    config.background.video.scale_mode = Some(mode);
   }
   config
 }

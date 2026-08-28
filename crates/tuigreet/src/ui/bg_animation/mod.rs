@@ -2,6 +2,7 @@
 
 pub mod doom;
 pub mod matrix;
+pub mod video;
 
 use std::str::FromStr;
 
@@ -24,27 +25,33 @@ pub trait Animation: Send + Sync {
 pub enum Kind {
   Doom,
   Matrix,
+  Video,
 }
 
 /// Catalog entry for a registered animation kind.
 #[allow(dead_code)]
 pub struct KindInfo {
-  pub kind:  Kind,
-  pub name:  &'static str,
+  pub kind: Kind,
+  pub name: &'static str,
   pub label: &'static str,
 }
 
 /// Every registered animation kind, in menu display order.
 pub const KINDS: &[KindInfo] = &[
   KindInfo {
-    kind:  Kind::Doom,
-    name:  "doom",
+    kind: Kind::Doom,
+    name: "doom",
     label: "DOOM Fire",
   },
   KindInfo {
-    kind:  Kind::Matrix,
-    name:  "matrix",
+    kind: Kind::Matrix,
+    name: "matrix",
     label: "Matrix",
+  },
+  KindInfo {
+    kind: Kind::Video,
+    name: "video",
+    label: "GIF Background",
   },
 ];
 
@@ -54,6 +61,7 @@ impl Kind {
     match name.trim().to_ascii_lowercase().as_str() {
       "doom" | "fire" => Some(Self::Doom),
       "matrix" | "cmatrix" => Some(Self::Matrix),
+      "video" | "gif" => Some(Self::Video),
       _ => None,
     }
   }
@@ -64,6 +72,7 @@ impl Kind {
 pub enum AnimationSpec {
   Doom(doom::Options),
   Matrix(matrix::Options),
+  Video(video::Options),
 }
 
 /// Construct an animation matching `spec`'s variant.
@@ -71,6 +80,7 @@ pub fn build(spec: &AnimationSpec) -> Box<dyn Animation> {
   match spec {
     AnimationSpec::Doom(opts) => Box::new(doom::Doom::new(opts.clone())),
     AnimationSpec::Matrix(opts) => Box::new(matrix::Matrix::new(opts.clone())),
+    AnimationSpec::Video(opts) => Box::new(video::Video::new(opts.clone())),
   }
 }
 
@@ -81,6 +91,7 @@ impl Kind {
     match self {
       Self::Doom => AnimationSpec::Doom(doom::Options::default()),
       Self::Matrix => AnimationSpec::Matrix(matrix::Options::default()),
+      Self::Video => AnimationSpec::Video(video::Options::default()),
     }
   }
 }
@@ -140,5 +151,7 @@ mod tests {
     assert_eq!(Kind::from_name(""), None);
     assert_eq!(Kind::from_name("matrix"), Some(Kind::Matrix));
     assert_eq!(Kind::from_name("CMATRIX"), Some(Kind::Matrix));
+    assert_eq!(Kind::from_name("video"), Some(Kind::Video));
+    assert_eq!(Kind::from_name("gif"), Some(Kind::Video));
   }
 }

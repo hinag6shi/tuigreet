@@ -25,7 +25,7 @@ tuigreet-types   = { workspace = true }
 ansi-to-tui        = { workspace = true }
 chrono             = { workspace = true }
 crossterm          = { workspace = true }
-dirs               = { workspace = true }
+dirs.workspace = true
 futures            = { workspace = true }
 getopts            = { workspace = true }
 greetd_ipc         = { workspace = true }
@@ -43,6 +43,11 @@ tui                = { workspace = true }
 utmp-rs            = { workspace = true }
 uzers              = { workspace = true }
 zeroize            = { workspace = true }
+
+image   = { version = "0.25.10", default-features = false, features = ["gif"] }
+sha2    = "0.11.0"
+bincode = "1.3"
+serde   = { workspace = true, features = ["derive"] }
 
 [dev-dependencies]
 greetd-stub   = { workspace = true }

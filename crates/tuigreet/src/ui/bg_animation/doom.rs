@@ -45,7 +45,7 @@ pub struct Options {
   /// Horizontal jitter. Clamped to 0..=4.
   pub spread: u8,
   /// Color of the coolest flame tips.
-  pub top:    Color,
+  pub top: Color,
   /// Color of the mid-band flames.
   pub middle: Color,
   /// Color of the hottest flames.
@@ -57,7 +57,7 @@ impl Default for Options {
     Self {
       height: 6,
       spread: 2,
-      top:    Color::Rgb(0x9F, 0x27, 0x07),
+      top: Color::Rgb(0x9F, 0x27, 0x07),
       middle: Color::Rgb(0xC7, 0x8F, 0x17),
       bottom: Color::Rgb(0xFF, 0xFF, 0xFF),
     }
@@ -65,11 +65,11 @@ impl Default for Options {
 }
 
 pub struct Doom {
-  width:  u16,
+  width: u16,
   height: u16,
-  buf:    Vec<u8>,
-  opts:   Options,
-  rng:    StdRng,
+  buf: Vec<u8>,
+  opts: Options,
+  rng: StdRng,
 }
 
 impl Doom {
