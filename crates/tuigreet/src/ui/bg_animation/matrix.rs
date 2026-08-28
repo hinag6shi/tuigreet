@@ -67,13 +67,13 @@ pub struct Options {
 impl Default for Options {
   fn default() -> Self {
     Self {
-      head:          Color::Rgb(0xCC, 0xFF, 0xCC),
-      bright:        Color::Rgb(0x33, 0xFF, 0x66),
-      dim:           Color::Rgb(0x00, 0x66, 0x22),
-      min_length:    6,
-      max_length:    18,
-      min_speed:     0.30,
-      max_speed:     1.10,
+      head: Color::Rgb(0xCC, 0xFF, 0xCC),
+      bright: Color::Rgb(0x33, 0xFF, 0x66),
+      dim: Color::Rgb(0x00, 0x66, 0x22),
+      min_length: 6,
+      max_length: 18,
+      min_speed: 0.30,
+      max_speed: 1.10,
       mutate_chance: 0.02,
     }
   }
@@ -86,14 +86,14 @@ impl Default for Options {
 struct Column {
   /// Fractional head row. May be negative — that means the head is still
   /// above the top edge and the stream is "warming up".
-  head_y:   f32,
+  head_y: f32,
   /// Length of the trail in rows.
-  length:   u16,
+  length: u16,
   /// Rows per frame.
-  speed:    f32,
+  speed: f32,
   /// `true` while the stream is on screen or warming up; `false` while in
   /// cooldown waiting to respawn.
-  active:   bool,
+  active: bool,
   /// Frames remaining before respawn when `!active`.
   cooldown: u16,
 }
@@ -102,17 +102,17 @@ struct Column {
 /// the column's stream; `age == n` is `n - 1` rows behind the head.
 #[derive(Clone, Copy, Debug, Default)]
 struct Cell {
-  ch:  char,
+  ch: char,
   age: u16,
 }
 
 pub struct Matrix {
-  width:  u16,
+  width: u16,
   height: u16,
-  cols:   Vec<Column>,
-  cells:  Vec<Cell>,
-  opts:   Options,
-  rng:    StdRng,
+  cols: Vec<Column>,
+  cells: Vec<Cell>,
+  opts: Options,
+  rng: StdRng,
 }
 
 impl Matrix {

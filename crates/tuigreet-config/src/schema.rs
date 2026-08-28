@@ -107,20 +107,16 @@ impl TerminalConfig {
   #[must_use]
   pub fn invalid_reason(&self) -> Option<String> {
     match (self.cols, self.rows) {
-      (Some(_), None) => {
-        Some(
-          "`terminal.cols` is set but `terminal.rows` is missing; both must \
+      (Some(_), None) => Some(
+        "`terminal.cols` is set but `terminal.rows` is missing; both must \
            be provided together"
-            .to_string(),
-        )
-      },
-      (None, Some(_)) => {
-        Some(
-          "`terminal.rows` is set but `terminal.cols` is missing; both must \
+          .to_string(),
+      ),
+      (None, Some(_)) => Some(
+        "`terminal.rows` is set but `terminal.cols` is missing; both must \
            be provided together"
-            .to_string(),
-        )
-      },
+          .to_string(),
+      ),
       (Some(0), Some(_)) => {
         Some("`terminal.cols` must be greater than 0".to_string())
       },
@@ -151,9 +147,9 @@ pub struct GeneralConfig {
 impl Default for GeneralConfig {
   fn default() -> Self {
     Self {
-      debug:    false,
+      debug: false,
       log_file: default_log_file(),
-      numlock:  false,
+      numlock: false,
     }
   }
 }
@@ -189,12 +185,12 @@ pub struct SessionConfig {
 impl Default for SessionConfig {
   fn default() -> Self {
     Self {
-      command:          None,
-      sessions_dirs:    default_sessions_dirs(),
-      xsessions_dirs:   default_xsessions_dirs(),
-      session_wrapper:  None,
+      command: None,
+      sessions_dirs: default_sessions_dirs(),
+      xsessions_dirs: default_xsessions_dirs(),
+      session_wrapper: None,
       xsession_wrapper: default_xsession_wrapper(),
-      environments:     Vec::new(),
+      environments: Vec::new(),
     }
   }
 }
@@ -300,7 +296,7 @@ pub struct SecretConfig {
 impl Default for SecretConfig {
   fn default() -> Self {
     Self {
-      mode:       SecretMode::Hidden,
+      mode: SecretMode::Hidden,
       characters: default_secret_characters(),
     }
   }
@@ -333,11 +329,11 @@ pub struct LayoutConfig {
 impl Default for LayoutConfig {
   fn default() -> Self {
     Self {
-      width:             default_width(),
-      window_padding:    None,
+      width: default_width(),
+      window_padding: None,
       container_padding: None,
-      prompt_padding:    None,
-      widgets:           WidgetConfig::default(),
+      prompt_padding: None,
+      widgets: WidgetConfig::default(),
     }
   }
 }
@@ -406,13 +402,13 @@ pub struct StatusBarConfig {
 impl Default for StatusBarConfig {
   fn default() -> Self {
     Self {
-      show_reset:          default_true(),
-      show_command:        default_true(),
-      show_session:        default_true(),
-      show_power:          default_true(),
-      show_background:     default_true(),
+      show_reset: default_true(),
+      show_command: default_true(),
+      show_session: default_true(),
+      show_power: default_true(),
+      show_background: default_true(),
       show_session_status: default_true(),
-      show_caps_lock:      default_true(),
+      show_caps_lock: default_true(),
     }
   }
 }
@@ -444,10 +440,10 @@ pub struct PowerConfig {
 impl Default for PowerConfig {
   fn default() -> Self {
     Self {
-      shutdown:   None,
-      reboot:     None,
-      suspend:    None,
-      hibernate:  None,
+      shutdown: None,
+      reboot: None,
+      suspend: None,
+      hibernate: None,
       use_setsid: default_use_setsid(),
     }
   }
@@ -476,9 +472,9 @@ pub struct KeybindingsConfig {
 impl Default for KeybindingsConfig {
   fn default() -> Self {
     Self {
-      command:    default_kb_command(),
-      sessions:   default_kb_sessions(),
-      power:      default_kb_power(),
+      command: default_kb_command(),
+      sessions: default_kb_sessions(),
+      power: default_kb_power(),
       background: default_kb_background(),
     }
   }
@@ -489,34 +485,34 @@ impl Default for KeybindingsConfig {
 pub struct ThemeConfig {
   /// Border color
   #[serde(default)]
-  pub border:    Option<String>,
+  pub border: Option<String>,
   /// Base text color
   #[serde(default)]
-  pub text:      Option<String>,
+  pub text: Option<String>,
   /// Time display color
   #[serde(default)]
-  pub time:      Option<String>,
+  pub time: Option<String>,
   /// Container background color
   #[serde(default)]
   pub container: Option<String>,
   /// Container title color
   #[serde(default)]
-  pub title:     Option<String>,
+  pub title: Option<String>,
   /// Greeting text color
   #[serde(default)]
-  pub greet:     Option<String>,
+  pub greet: Option<String>,
   /// Prompt text color
   #[serde(default)]
-  pub prompt:    Option<String>,
+  pub prompt: Option<String>,
   /// User input color
   #[serde(default)]
-  pub input:     Option<String>,
+  pub input: Option<String>,
   /// Action text color
   #[serde(default)]
-  pub action:    Option<String>,
+  pub action: Option<String>,
   /// Action button color
   #[serde(default)]
-  pub button:    Option<String>,
+  pub button: Option<String>,
 }
 
 /// Background animation configuration. Each animation kind owns its own
@@ -542,6 +538,9 @@ pub struct BackgroundConfig {
   /// Parameters for the cmatrix-style digital rain effect.
   #[serde(default)]
   pub matrix: MatrixConfig,
+
+  #[serde(default)]
+  pub video: VideoConfig,
 }
 
 /// Parameters for the DOOM-style fire animation. Field names mirror Ly's
@@ -606,6 +605,23 @@ pub struct MatrixConfig {
   /// shimmer). `0.0` disables.
   #[serde(default)]
   pub mutate_chance: Option<f32>,
+}
+
+/// Parameters for the GIF-backed video background.
+#[derive(Debug, Clone, Deserialize, Serialize, Default, PartialEq, Eq)]
+pub struct VideoConfig {
+  /// Path to the source GIF file.
+  #[serde(default)]
+  pub path: Option<String>,
+
+  /// Glyph ramp from darkest to brightest (default: " .:-=+*#%@").
+  #[serde(default)]
+  pub charset: Option<String>,
+
+  /// How the source aspect ratio is fit into the terminal grid:
+  /// "fit", "fill", or "stretch" (default: "fit").
+  #[serde(default)]
+  pub scale_mode: Option<String>,
 }
 
 /// Greeting alignment options

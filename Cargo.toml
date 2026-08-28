@@ -50,7 +50,6 @@ tui = { package = "ratatui", version = "0.30.2", default-features = false, featu
   "crossterm",
   "unstable",
 ] }
-unic-langid = "0.9.6"
 utmp-rs = "0.4.0"
 uzers = "0.12.2"
 zeroize = "1.9.0"
